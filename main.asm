@@ -41,7 +41,7 @@ exitRandomizeLoop:
 	li $t1, 24
 	
 PrintArray:
-	beq $t0, $t1, exitLoop
+	beq $t0, $t1, exitPrintArray
 	lw $t2, cardInitialValues($t0)
 	
 	# Printing out the number
@@ -59,7 +59,7 @@ PrintArray:
 	j PrintArray
 	
 	
-exitLoop:
+exitPrintArray:
 		
 	#Looping through array to print cards
 	
