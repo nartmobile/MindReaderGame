@@ -1,1 +1,2 @@
-pull, unzip, open mars, win!
+# Manuel
+To be written after program is done

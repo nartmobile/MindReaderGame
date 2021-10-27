@@ -20,3 +20,8 @@ Pushes commited code and sets upstream at the same time
 2. Make sure your branch is up to date with main  
 run `git pull origin main` to merge main's changes to your branch. (you'll solve merge conflicts)  
 Makes it easier to review pull request and merge into main since your pull is up to date with main
+<br/>
+
+### Markdown preview command for VS Code
+mac: `cmd + shift + v`  
+windows: `ctrl + shift + v`
