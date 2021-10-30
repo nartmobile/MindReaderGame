@@ -64,6 +64,12 @@ exitPrintArray:
 	#Looping through array to print cards
 	
 		#print cards function call
+	
+	# this is just to test to see if printCard function works
+	# tested (default) with startVal = 1
+	# to use printCard function, set $a1 to starting value of card
+	li $a1, 1
+	jal printCard
 		
 	#asking to play again
 	li $v0, 4
@@ -75,6 +81,42 @@ exitPrintArray:
 	
 	beqz $v0, exitGame
 	j beginGame
+
+	# start of printCard function
+printCard:
+	# assuming $a1 holds the value of startVal of the card being printed
+	# using $a1, $a2, $a3, $t7 for the time being (decide later on registers to use)
+	# $a1 = startVal, $a2 = counter, $a3 = 64, $t7 = startVal && counter
+	li $a2, 1
+	li $a3, 64
+	
+	# printing out new line (separate from previous output)
+	li $v0, 4
+	la $a0, newLine
+	syscall
+	
+printCardLoop:
+	beq $a2, $a3, exitPrintCard 	# exit when all 63 numbers (branch at 64) have been looped through
+	and $t7, $a1, $a2		# $t7 = startVal && counter
+	bne $t7, $a1, printCardInc	# skip printing number if (startVal && counter) != startVal
+	
+	# print number (counter) and a space
+	li $v0, 1
+	add $a0, $a2, $zero
+	syscall
+	
+	li $v0, 11
+	li $a0, 32
+	syscall
+
+printCardInc:
+	addi $a2, $a2, 1		# increment counter by 1
+	j printCardLoop			# go back to start of printCard loop (condition)
+	
+exitPrintCard:
+	# by default, putting jr instruction (using jal to call printCard)
+	jr $ra
+	# end of printCard function
 	
 exitGame:
 	li $v0, 10
