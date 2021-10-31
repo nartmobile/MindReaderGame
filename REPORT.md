@@ -18,6 +18,8 @@
 
 - Displaying the Cards  
 {Discuss how the printCard function works} - Brian
+&nbsp;&nbsp;&nbsp;&nbsp;The printCard function requires the starting value of the desired card. Through a loop, iterating through numbers 1 to 63 (inclusive), the function will print out the corresponding numbers with that starting value.
+&nbsp;&nbsp;&nbsp;&nbsp;For the loop, a counter starting at 1 is used. The AND operation is applied to the counter and starting value. The result of that operation is compared to the starting value, and if they are equal, the counter and a space is printed. Otherwise, printing is skipped. The counter is then incremented, and the program returns to the condition at the start of the loop. The program exits the function when the counter reaches 64, returning to where the function was called.
 <br/>
 
 - Determining the User's Number  
