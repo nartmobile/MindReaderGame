@@ -18,6 +18,9 @@
 
 - Displaying the Cards  
 {Discuss how the printCard function works} - Brian
+&nbsp;&nbsp;&nbsp;&nbsp;The printCard function requires the starting value of the desired card. Through a loop, iterating through numbers 1 to 63 (inclusive), the function will print out the corresponding numbers with that starting value.
+&nbsp;&nbsp;&nbsp;&nbsp;For the loop, a counter starting at 1 is used. The AND operation is applied to the counter and starting value. The result of that operation is compared to the starting value, and if they are equal, the counter and a space is printed. Otherwise, printing is skipped. The counter is then incremented, and the program returns to the condition at the start of the loop. The program exits the function when the counter reaches 64, returning to where the function was called.
+&nbsp;&nbsp;&nbsp;&nbsp;The reason why the AND operation is used is because for each card, when written in binary, each number on that card contains the starting value when written out in binary. For example, 5 is 101 in binary. 1 is 001 in binary. Both 5 and 1 contain a 1 in the rightmost bit (2^0). Therefore, if a user were to guess 5, we know that the leftmost bit should be 1, meaning 5 goes with the card starting with 1. The AND operation allows us to determine if a number contains the starting value, since by applying the AND operation on the number and the starting value, the result should be either the starting value (if the number contains it) or 0 (if the number doesn't contain it).
 <br/>
 
 - Determining the User's Number  
