@@ -37,39 +37,30 @@ skipSwap:
 exitRandomizeLoop:
 		
 	#Print randomized array, only for debugging
-	li $t0, 0
-	li $t1, 24
+	li $t0, 0	#t0 is the index(offset) for the CardArray
+	li $t1, 24	#t1 is the limit of the last offset before reaching out of bounds
 	
-PrintArray:
-	beq $t0, $t1, exitPrintArray
-	lw $t2, cardInitialValues($t0)
+startUX:
+	beq $t0, $t1, endUX
+	lw $t2, cardInitialValues($t0)	#t2 holds the value of the array at index $t0/4
 	
-	# Printing out the number
-    	li $v0, 1
-    	move $a0, $t2
-    	syscall
-    	
-    	# print space
-	li $a0, 32
-	li $v0, 11
-	syscall
-	
-	
-	addi $t0, $t0, 4
-	j PrintArray
-	
-	
-exitPrintArray:
-		
-	#Looping through array to print cards
-	
-		#print cards function call
-	
-	# this is just to test to see if printCard function works
-	# tested (default) with startVal = 1
-	# to use printCard function, set $a1 to starting value of card
-	li $a1, 1
+	#Function call to print current card
+	move $a1, $t2
 	jal printCard
+	
+	#ANDREW'S PART
+	#ask for user input to indicate if their number is on the card or not
+	#if it is, add the starting card value($t2) to a sum
+	#once all 6 cards are done(loop is done), display the sum
+	
+	addi $t0, $t0, 4	#increase to next index(offset)
+	j startUX
+	
+	
+endUX:	#end user input loop
+
+	#display the sum
+
 		
 	#asking to play again
 	li $v0, 4
@@ -122,4 +113,3 @@ exitGame:
 	li $v0, 10
 	syscall
 	
-	#Print cards function
