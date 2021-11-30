@@ -1,6 +1,7 @@
 .data
 	cardInitialValues: .word 1, 2, 4, 8, 16, 32
-	playAgainMessage: .asciiz "\n\nDo you want to play again? (1 for yes, 0 for no)\n"
+	playAgainMessage: .asciiz "Do you want to play again? (y for yes, anything else for no)"
+	repeat: .word 0
 	newLine: .asciiz "\n"
 	
 .text
@@ -36,7 +37,6 @@ skipSwap:
 	
 exitRandomizeLoop:
 		
-	#Print randomized array, only for debugging
 	li $t0, 0	#t0 is the index(offset) for the CardArray
 	li $t1, 24	#t1 is the limit of the last offset before reaching out of bounds
 	
@@ -63,15 +63,27 @@ endUX:	#end user input loop
 
 		
 	#asking to play again
-	li $v0, 4
+	#li $v0, 4
+	#la $a0, playAgainMessage
+	#syscall
+	
+	li $v0, 54
 	la $a0, playAgainMessage
+	la $a1, repeat
+	la $a2, 2
 	syscall
 	
-	li $v0, 5
-	syscall
 	
-	beqz $v0, exitGame
+	move $t0, $a1	#moving input content of $a1 to $t0
+	lw $t1, repeat	#loading repeat input message to $t1
+	
+	bne $t0, $zero, exitGame
+	
+	
+	bne $t1, 121, exitGame
+	
 	j beginGame
+
 
 	# start of printCard function
 printCard:
