@@ -1,7 +1,9 @@
 .data
 	cardInitialValues: .word 1, 2, 4, 8, 16, 32
 	playAgainMessage: .asciiz "\n\nDo you want to play again? (1 for yes, 0 for no)\n"
+	cardVisiblePrompt: .asciiz "Is your number shown on the card?"
 	newLine: .asciiz "\n"
+	buffer: .space 20
 	
 .text
 
@@ -52,6 +54,24 @@ startUX:
 	#ask for user input to indicate if their number is on the card or not
 	#if it is, add the starting card value($t2) to a sum
 	#once all 6 cards are done(loop is done), display the sum
+	
+	# print prompt
+	li $v0, 4
+	la $a0, cardVisiblePrompt
+	syscall
+	
+	# store input
+	li $v0, 8
+	la $a0, buffer
+	li $a1, 20
+	move $t8, $a0
+	syscall
+	
+	
+	
+	
+	
+	
 	
 	addi $t0, $t0, 4	#increase to next index(offset)
 	j startUX
