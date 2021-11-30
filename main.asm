@@ -56,11 +56,6 @@ startUX:
 	move $a1, $t2
 	jal printCard
 	
-	#ANDREW'S PART
-	#ask for user input to indicate if their number is on the card or not
-	#if it is, add the starting card value($t2) to a sum
-	#once all 6 cards are done(loop is done), display the sum
-	
 	# store input
 	li $v0, 54
 	la $a0, cardVisiblePrompt
@@ -91,11 +86,6 @@ endUX:	#end user input loop
 	li $v0, 1
 	la $a0, ($t9)
 	syscall
-		
-	#asking to play again
-	#li $v0, 4
-	#la $a0, playAgainMessage
-	#syscall
 	
 	li $v0, 54
 	la $a0, playAgainMessage
