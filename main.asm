@@ -1,7 +1,13 @@
 .data
 	cardInitialValues: .word 1, 2, 4, 8, 16, 32
-	playAgainMessage: .asciiz "\n\nDo you want to play again? (1 for yes, 0 for no)\n"
+	cardVisiblePrompt: .asciiz "Is your number shown on the card?"
+	playAgainMessage: .asciiz "Do you want to play again? (y for yes, anything else for no)"
+	guessMessage: .asciiz "\nYour number is: "
+	userInput: .word 0
+	repeat: .word 0
 	newLine: .asciiz "\n"
+	newGame: .asciiz "\n\n----------------------------------------------\n"
+	buffer: .space 20
 	
 .text
 
@@ -36,51 +42,72 @@ skipSwap:
 	
 exitRandomizeLoop:
 		
-	#Print randomized array, only for debugging
-	li $t0, 0
-	li $t1, 24
+	li $t0, 0	#t0 is the index(offset) for the CardArray
+	li $t1, 24	#t1 is the limit of the last offset before reaching out of bounds
 	
-PrintArray:
-	beq $t0, $t1, exitPrintArray
-	lw $t2, cardInitialValues($t0)
+# $t9 holds the sum
+li $t9, 0
+
+startUX:
+	beq $t0, $t1, endUX
+	lw $t2, cardInitialValues($t0)	#t2 holds the value of the array at index $t0/4
 	
-	# Printing out the number
-    	li $v0, 1
-    	move $a0, $t2
-    	syscall
-    	
-    	# print space
-	li $a0, 32
-	li $v0, 11
-	syscall
-	
-	
-	addi $t0, $t0, 4
-	j PrintArray
-	
-	
-exitPrintArray:
-		
-	#Looping through array to print cards
-	
-		#print cards function call
-	
-	# this is just to test to see if printCard function works
-	# tested (default) with startVal = 1
-	# to use printCard function, set $a1 to starting value of card
-	li $a1, 1
+	#Function call to print current card
+	move $a1, $t2
 	jal printCard
-		
-	#asking to play again
+	
+	# store input
+	li $v0, 54
+	la $a0, cardVisiblePrompt
+	la $a1, userInput
+	la $a2, 2
+	syscall
+	
+	lw $t8, userInput
+
+	beq $t8, 121, numExist
+	
+	addi $t0, $t0, 4	#increase to next index(offset)
+	j startUX
+	
+	
+numExist: #card exist processing
+	add $t9, $t9, $t2
+	addi $t0, $t0, 4	#increase to next index(offset)
+	j startUX
+
+endUX:	#end user input loop
+
+	#display the sum
 	li $v0, 4
+	la $a0, guessMessage
+	syscall
+	
+	li $v0, 1
+	la $a0, ($t9)
+	syscall
+	
+	li $v0, 54
 	la $a0, playAgainMessage
+	la $a1, repeat
+	la $a2, 2
 	syscall
 	
-	li $v0, 5
+	
+	move $t0, $a1	#moving input content of $a1 to $t0
+	lw $t1, repeat	#loading repeat input message to $t1
+	
+	bne $t0, $zero, exitGame
+	
+	
+	bne $t1, 121, exitGame
+	
+	li $v0, 4
+	la $a0, newGame
 	syscall
 	
-	beqz $v0, exitGame
 	j beginGame
+
 
 	# start of printCard function
 printCard:
@@ -122,4 +149,3 @@ exitGame:
 	li $v0, 10
 	syscall
 	
-	#Print cards function
