@@ -8,7 +8,6 @@
 	repeat: .word 0
 	newLine: .asciiz "\n"
 	newGame: .asciiz "\n\n----------------------------------------------\n"
-	buffer: .space 20
 	
 .text
 
@@ -91,9 +90,8 @@ redoInput:	#redoing input when user has entered invalid input
 	syscall
 	
 	lw $t8, userInput
-	move $t7, $a1	#moving status content of $a1 to $t0
 	
-	bne $t7, $zero, redoInput
+	bne $a1, $zero, redoInput
 	j continueUX
 
 endUX:	#end user input loop
@@ -114,11 +112,9 @@ endUX:	#end user input loop
 	syscall
 	
 	
-	move $t0, $a1	#moving status content of $a1 to $t0
 	lw $t1, repeat	#loading repeat input message to $t1
 	
-	bne $t0, $zero, exitGame	#check invalid status
-	
+	bne $a1, $zero, exitGame	#check invalid status
 	bne $t1, 121, exitGame
 	
 	li $v0, 4
