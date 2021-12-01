@@ -1,6 +1,7 @@
 .data
 	cardInitialValues: .word 1, 2, 4, 8, 16, 32
-	cardVisiblePrompt: .asciiz "Is your number shown on the card?"
+	cardVisiblePrompt: .asciiz "Is your number shown on the card? (y for yes, n for no)"
+	redoInputMessage: .asciiz "You entered an invalid input, enter again (y/n)"
 	playAgainMessage: .asciiz "Do you want to play again? (y for yes, anything else for no)"
 	guessMessage: .asciiz "\nYour number is: "
 	userInput: .word 0
@@ -45,8 +46,8 @@ exitRandomizeLoop:
 	li $t0, 0	#t0 is the index(offset) for the CardArray
 	li $t1, 24	#t1 is the limit of the last offset before reaching out of bounds
 	
-# $t9 holds the sum
-li $t9, 0
+	# $t9 holds the sum
+	li $t9, 0
 
 startUX:
 	beq $t0, $t1, endUX
@@ -64,17 +65,36 @@ startUX:
 	syscall
 	
 	lw $t8, userInput
-
+	move $t7, $a1	#moving status content of $a1 to $t0
+	
+	bne $t7, $zero, redoInput	#branch on invalid status
+	
+continueUX:
+	beq $t8, 110, skipAdd
 	beq $t8, 121, numExist
 	
-	addi $t0, $t0, 4	#increase to next index(offset)
-	j startUX
+	#neither y/n at this point
+	j redoInput
 	
 	
 numExist: #card exist processing
 	add $t9, $t9, $t2
+skipAdd:
 	addi $t0, $t0, 4	#increase to next index(offset)
 	j startUX
+	
+redoInput:	#redoing input when user has entered invalid input
+	li $v0, 54
+	la $a0, redoInputMessage
+	la $a1, userInput
+	la $a2, 2
+	syscall
+	
+	lw $t8, userInput
+	move $t7, $a1	#moving status content of $a1 to $t0
+	
+	bne $t7, $zero, redoInput
+	j continueUX
 
 endUX:	#end user input loop
 
@@ -94,11 +114,10 @@ endUX:	#end user input loop
 	syscall
 	
 	
-	move $t0, $a1	#moving input content of $a1 to $t0
+	move $t0, $a1	#moving status content of $a1 to $t0
 	lw $t1, repeat	#loading repeat input message to $t1
 	
-	bne $t0, $zero, exitGame
-	
+	bne $t0, $zero, exitGame	#check invalid status
 	
 	bne $t1, 121, exitGame
 	
