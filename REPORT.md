@@ -25,6 +25,9 @@ The reason why the AND operation is used is because for each card, when written 
 <br/>
 
 - Determining the User's Number  
+In order to describe how we find the user's number, we must first describe the context and the premise of the game. There are 6 cards in the game, and each card has values on it that correspond to 2^n. Thus, if we have numbers on the "n"th card, then all the numbers on the "n"th card can be represented in binary with a 1 at the "n"th position. For example, if we have the number 19, in binary, it can be represented as 10011. As such, it will be placed on cards 0, 1, and 4. The next step would be to ask the user to tell us which cards the number appears on, and which ones it doesn't. By the end of this process, we will have cards 0, 1, and 4 left over. Since each card starts with the first number of the 2^nth power, that means that the beginning number of each card is either 1, 2, 4, 8, 16, or 32. We can then simply sum the first numbers of each card that is remaining to determine the user's target number.
+
+
 {Discuss how we're able to determine the user's number based on their answer's to each card(y/n)} - Andrew  
 
 - Input Validation (General)  
