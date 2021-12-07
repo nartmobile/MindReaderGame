@@ -7,9 +7,11 @@ The program asks the user if they would like to play again, looping back or exit
 
 ## Challenges
 The biggest challenge that we faced when working on this project was figuring out how to all work on this project simultaneously. There were many parts of the project that depended on each other so we were unsure on which agile methodology would work best. We wanted to be able to do parts of the program ourselves without the need on waiting on other team members to finish their part in order to proceed. After coming up with the pseudocode, we decided that a Kanban agile management would work best. Based on the pseudocode, there were certain parts of the program that did not entire depend on previous parts in order to be written such as randomizing cards, generating individual cards, and calculating the secret number.  
-Another challenge that we faced was mixing up registers used. Since each team member was working on their own part without much knowledge of how the other parts are being written, it was easy for more than one team member to use the same register, furthur corrupting the data that was needed in said register. To establish a consistent workflow to help with this issue, we decided to use github. Through github, we were able to send our changes often without changing the code of other team members and at the same time, notify which registers we were working with.
+Another challenge that we faced was mixing up registers used. Since each team member was working on their own part without much knowledge of how the other parts are being written, it was easy for more than one team member to use the same register, further corrupting the data that was needed in said register. To establish a consistent workflow to help with this issue, we decided to use github. Through github, we were able to send our changes often without changing the code of other team members and at the same time, notify which registers we were working with.
 
 ## What I Learned (Individual)
+This project was fun because I learned how to create a full program in MIPS as well as get some experience working with a team and on Git. Personally, understanding the game at all was already a fun and exciting twist to a generic GUI program / coding assignment. Learning to break up the work and manage shared resources was also fun and helped tie together all the stuff we've learned this semester. The GUI syscalls (for the prompts) were also fun to experiment with. I mostly worked with the decision making and logic end of the program, so making sure all the branches were happening as planned was also fun and a different but similar pace from our OOP programming classes.
+
 
 ## Algorithms and Techniques
 - Randomizing the cards  
@@ -27,15 +29,13 @@ The reason why the AND operation is used is because for each card, when written 
 - Determining the User's Number  
 In order to describe how we find the user's number, we must first describe the context and the premise of the game. There are 6 cards in the game, and each card has values on it that correspond to 2^n. Thus, if we have numbers on the "n"th card, then all the numbers on the "n"th card can be represented in binary with a 1 at the "n"th position. For example, if we have the number 19, in binary, it can be represented as 10011. As such, it will be placed on cards 0, 1, and 4. The next step would be to ask the user to tell us which cards the number appears on, and which ones it doesn't. By the end of this process, we will have cards 0, 1, and 4 left over. Since each card starts with the first number of the 2^nth power, that means that the beginning number of each card is either 1, 2, 4, 8, 16, or 32. We can then simply sum the first numbers of each card that is remaining to determine the user's target number.
 
-
-{Discuss how we're able to determine the user's number based on their answer's to each card(y/n)} - Andrew  
-
 - Input Validation (General)  
 We used syscall 54 (InputDialogString) to display a message to the user with a text box for input.  
 When the program prompts the user if the card displayed contains their number, the program only accepts lowercase 'y' or lowercase 'n' as input. Anything other action (i.e., selecting cancel, entering invalid input) causes the prompt to display again. This is achieved by checking the status register ($a1). If the input is 1 character, then $a1 is assigned 0. The program branches to displaying the card again if $a1 is not equal to 0. The program also branches based on the ASCII value of that character, if $a1 is indeed 0. If it is equal to the ASCII value of lowercase 'y', then the program branches to adding the first number of the card and printing the next card. If it is equal to the ASCII value of lowercase 'n', then the program branches to printing the next card only. Otherwise, the program branches to displaying the prompt again.  
 When the program prompts the user if they would like to play again or not, it only accepts lowercase 'y' to restart the game. Any other action causes the program to terminate. Checking the status register ($a1), if the input is not 1 character, the program branches to exiting the game. In addition, if the character is not equal to the ASCII value of lowercase 'y', then the program branches to exiting the game. Otherwise, the program branches to the start of the game.
 
 ## Team Member Contributions (Individual)
+I give lots of credit to Nam and Brian for helping to organize the project and structure the workload for each of us. Nam helped me a lot in understanding the game and my task, and I think both Brian and Nam did equal good towards finishing the project and keeping up with their work. They worked in a timely manner and were very efficient and upfront.
 
 ## Suggestions (Optional)
 
